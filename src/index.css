@@ -1,13 +1,37 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* :root {
+   --card-bg-color: #F2F2F2;
+
+   --default-color: #1698D9;
+   --default-hover-color: #2EA8E6;
+   --selected-color: #D91667;
+   --selected-hover-color: #E52E7A;
+   --disabled-color: #B3B3B3;
+
+   --default-text-color: #FFFFFF;
+   --card-text-main: #000000;
+   --card-text-secondary: #666666;
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
 }
+
+@font-face {
+   font-family: "Exo2.0";
+   src: url("./assets/fonts/Exo2.0-Thin.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Trebuchet MS";
+    src: url("./assets/fonts/TrebuchetMS.ttf") format("truetype");
+    font-style: normal;
+}
+
+
+body {
+  font-family: "Trebuchet MS";
+} 
+*/
