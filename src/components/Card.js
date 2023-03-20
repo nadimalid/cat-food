@@ -14,10 +14,10 @@ const Card = (props) => {
    let cardColor = {default: "", hover: ""};
    let present = "мышь в подарок";
 
-console.log("hover" ,hover);
+// console.log("hover" ,hover);
    useLayoutEffect(() => {
       console.log(selected);
-      if(quantity == 0) {
+      if(quantity === 0) {
          setCardState("disabled")
        } else {
          selected ? setCardState("selected") : setCardState("");
@@ -40,34 +40,37 @@ console.log("hover" ,hover);
          cardColor= {default: theme.colors.disabledColor, hover: theme.colors.disabledColor};
          break;
       default:
-         specification = <>Чего сидишь? Порадуй котэ, <span onClick={toggle}>купи.</span></>
+         specification = <>Чего сидишь? Порадуй котэ, <span onClick={toggle}>купи</span></>
          cardColor= {default: theme.colors.defaultColor, hover: theme.colors.defaultHoverColor};
          break;
    }
 
    return(
       <CardWrapper>
-         <CardContent 
+         <CardBorder 
             onClick={cardState != "disabled" ? () => {
                cardState != "selected" ? setHover(false) : setHover(true);
                toggle() } : 
-               () => {}} 
+               () => {}}
+            color={cardColor}
             onMouseEnter = {() => setHover(true)}
             onMouseLeave = {() => setHover(false)}
             state={cardState} 
-            color={cardColor}
-            hover={hover}>
-            {cardState == "disabled" && <Bg></Bg>}
-            <CardHeader><span>Сказочное заморское яство</span></CardHeader>
-            <Brand>{brand}</Brand>
-            <Flavor>{flavor}</Flavor>
-            <Details>
-               <Segment><b>{portions}</b> порций</Segment>
-               <Segment>{present}</Segment>
-               { gift > 2 && <Segment>заказчик доволен</Segment>}
-            </Details>
-            <Mass><span>{weight}</span>кг</Mass>
-         </CardContent>
+            hover={hover}
+            >
+            <CardContent>
+               {cardState == "disabled" && <Bg></Bg>}
+               <CardHeader><span>Сказочное заморское яство</span></CardHeader>
+               <Brand>{brand}</Brand>
+               <Flavor>{flavor}</Flavor>
+               <Details>
+                  <Segment><b>{portions}</b> порций</Segment>
+                  <Segment>{present}</Segment>
+                  { gift > 2 && <Segment>заказчик доволен</Segment>}
+               </Details>
+               <Mass>{weight}<span>кг</span></Mass>
+            </CardContent>
+         </CardBorder>
          <Description state={cardState}>{specification}</Description>
       </CardWrapper>
    )
@@ -79,8 +82,6 @@ const CardWrapper = styled.div`
    row-gap: 0.875em;
 
    width: 320px;
-   height: 509px;
-
 `;
 
 const Bg = styled.div`
@@ -94,8 +95,8 @@ const Bg = styled.div`
 
 const Mass = styled.div`
    position: absolute;
-   right: 1rem;
-   bottom: 1rem;
+   right: 0.75rem;
+   bottom: 0.75rem;
 
    display: flex;
    flex-direction: column;
@@ -107,74 +108,45 @@ const Mass = styled.div`
 
    clip-path: circle(50% at 50% 50%);
 
-   font-size: 1.313rem;
+   font-size: 1.3em;
    color: ${props => props.theme.colors.defaultTextColor};
-   white-space: pre-line;
-
-`;
+   // white-space: pre-line;
+   font-size: 2.6em;
+   span {
+      font-size: 1.3rem;
+      line-height: 15px;
+   }
+`
 
 const CardHeader = styled.p`
+   margin-bottom: 0.3em;
    font-size: 1rem;
-`;
+`
 
 const Brand = styled.p`
    font-size: 3rem;
    font-weight: 700;
-`;
+`
 
 const Flavor = styled.p`
    font-size: 1.5rem;
    font-weight: 700;
-`;
+`
 
-const CardContent = styled.div`
-   display: flex;
-   flex-direction: column;
-   align-items: flex-start;
-
-   position: relative;
-   height: 480px;
-   padding: 1.313em 0 0 3.188em;
-   
-   background-image: url(${Cat});
-   background-repeat: no-repeat;
-   background-position: Top 208px Left -24px;
-   background-color: ${props => props.theme.colors.cardBackgroundColor};
-
-   border: 4px solid ${props =>  props.color.default};
-   border-radius: 12px;
-   clip-path: polygon(22.8% 0, 100% 0, 100% 100%, 0 100%, 0 15%);
-   overflow: hidden;
-
-   font-weight: 400;
-   color: ${props => props.state != "disabled" ? props.theme.colors.cardTextSecondary : props.color.default};
+const CardBorder = styled.div`
+   background-color: ${props => props.hover ? props.color.hover : props.color.default};
+   border-radius: ${props => props.theme.card.borderRadius};
+   clip-path: ${props => props.theme.card.clipPath};
    cursor: ${props => props.state != "disabled" ? "pointer" : "default"};
 
-   ::after {
-      content: "";
-      position: absolute;
-      left: -24.69%;
-      right: 85.8%;
-      top: -12.77%;
-      bottom: 88.32%;
-      max-width: 124.45px;
-      aspect-ratio: 1 / 1;
-      transform: rotate(45deg);
-      border-right: 4px solid ${props => props.color.default};
-      box-sizing: border-box;
-   }
 
-   &:hover , &:hover::after{
-      border: 4px solid ${props =>  props.hover ? props.color.hover : props.color.default};
-   }
-
-   &:hover > ${CardHeader} span {
+   &:hover ${CardHeader} span {
       ${props => props.state == "selected" && props.hover && `
          display: none;
       `}
    }
 
-   &:hover > ${CardHeader}::before {
+   &:hover ${CardHeader}::before {
       ${props => props.state == "selected" && props.hover && `
          content: "Котэ не одобряет?";
          color: ${props.color.hover};
@@ -189,16 +161,41 @@ const CardContent = styled.div`
       background-color: ${props => props.color.default};
    }
 
-   &:hover > ${Mass}{
+   &:hover ${Mass}{
          background-color: ${props =>  props.hover ? props.color.hover : props.color.default};
    }
+`
 
+const CardContent = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+
+   position: relative;
+   height: 472px;
+   margin: 4px;
+   padding: 1em 0 0 2.9em;
+   
+   background-image: url(${Cat});
+   background-repeat: no-repeat;
+   background-position: Top 208px Left -24px;
+   background-color: ${props => props.theme.colors.cardBackgroundColor};
+
+   
+   border-radius: ${props => props.theme.card.borderRadius};;
+   clip-path: ${props => props.theme.card.clipPath};
+   overflow: hidden;
+
+   font-weight: 400;
+   color: ${props => props.state != "disabled" ? props.theme.colors.cardTextSecondary : props.color.default};
 `;
 
 const Details = styled.div`
    display: flex;
    flex-direction: column;
    align-items: flex-start;
+
+   margin-top: 0.9em;
 `
 
 const Segment = styled.p`
@@ -214,6 +211,12 @@ const Description = styled.p`
       color: ${props => props.theme.colors.defaultColor};
       text-decoration: underline dashed;
       cursor: pointer;
+   }
+
+   span::after {
+      content: ".";
+      display: inline-block;
+      text-decoration: none;
    }
 `
 

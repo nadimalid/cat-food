@@ -39,6 +39,10 @@ const basicTheme = {
         cardBackgroundColor: "#F2F2F2",
         cardTextMain: "#000000",
         cardTextSecondary: "#666666",
+    },
+    card: {
+        clipPath: "polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 8%)",
+        borderRadius: "12px"
     }
 }
 
