@@ -1,30 +1,27 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, memo } from "react";
 import styled, { useTheme } from "styled-components";
 import Cat from "../assets/images/cat.svg";
 
 const Card = (props) => {
-   // console.log(props.flavor, props.selected);
-   const [cardState, setCardState] = useState();
-   const [hover, setHover] = useState(false);
+   
+   const [cardState, setCardState] = useState("");
+   const [hover, setHover] = useState(true);
    const {brand, flavor, portions, weight, gift, description, quantity, toggle, selected} = props;
-
    const theme = useTheme();
 
    let specification = "";
    let cardColor = {default: "", hover: ""};
    let present = "мышь в подарок";
 
-// console.log("hover" ,hover);
    useLayoutEffect(() => {
-      console.log(selected);
       if(quantity === 0) {
-         setCardState("disabled")
-       } else {
-         selected ? setCardState("selected") : setCardState("");
-       }
-   },[selected])
+         setCardState("disabled");
+       } else if(selected){
+         setCardState("selected");
+       } else { setCardState(""); }
+   },[selected, quantity])
    
-   if(gift == 2){
+   if(gift === 2){
       present = <><b>2</b> мыши в подарок</>;
    } else if ( gift > 2){
       present = <><b>{gift}</b> мышей в подарок</>;
@@ -45,21 +42,24 @@ const Card = (props) => {
          break;
    }
 
+   const onClickHandler = () => {
+      if(cardState !== "disabled") {
+         cardState !== "selected" ? setHover(false) : setHover(true);
+         toggle();
+      }
+   }
+
    return(
       <CardWrapper>
          <CardBorder 
-            onClick={cardState != "disabled" ? () => {
-               cardState != "selected" ? setHover(false) : setHover(true);
-               toggle() } : 
-               () => {}}
+            onClick={onClickHandler}
             color={cardColor}
-            onMouseEnter = {() => setHover(true)}
-            onMouseLeave = {() => setHover(false)}
+            onMouseLeave = {() => setHover(true)}
             state={cardState} 
             hover={hover}
             >
             <CardContent>
-               {cardState == "disabled" && <Bg></Bg>}
+               {cardState === "disabled" && <Bg></Bg>}
                <CardHeader><span>Сказочное заморское яство</span></CardHeader>
                <Brand>{brand}</Brand>
                <Flavor>{flavor}</Flavor>
@@ -90,7 +90,6 @@ const Bg = styled.div`
    width: 100%;
    height: 100%;
    background-color: #FFFFFF95;
-   
 `
 
 const Mass = styled.div`
@@ -110,7 +109,6 @@ const Mass = styled.div`
 
    font-size: 1.3em;
    color: ${props => props.theme.colors.defaultTextColor};
-   // white-space: pre-line;
    font-size: 2.6em;
    span {
       font-size: 1.3rem;
@@ -134,34 +132,35 @@ const Flavor = styled.p`
 `
 
 const CardBorder = styled.div`
-   background-color: ${props => props.hover ? props.color.hover : props.color.default};
+   background-color: ${props => props.color.default};
    border-radius: ${props => props.theme.card.borderRadius};
    clip-path: ${props => props.theme.card.clipPath};
-   cursor: ${props => props.state != "disabled" ? "pointer" : "default"};
+   cursor: ${props => props.state !== "disabled" ? "pointer" : "default"};
 
+   
 
    &:hover ${CardHeader} span {
-      ${props => props.state == "selected" && props.hover && `
+      ${props => props.state === "selected" && props.hover && `
          display: none;
       `}
    }
 
    &:hover ${CardHeader}::before {
-      ${props => props.state == "selected" && props.hover && `
+      ${props => props.state === "selected" && props.hover && `
          content: "Котэ не одобряет?";
          color: ${props.color.hover};
       `}
    }
 
    ${Brand} , ${Flavor} {
-      color: ${props => props.state != "disabled" ? props.theme.colors.cardTextMain : props.color.default};
+      color: ${props => props.state !== "disabled" ? props.theme.colors.cardTextMain : props.color.default};
    } 
 
    ${Mass} {
       background-color: ${props => props.color.default};
    }
 
-   &:hover ${Mass}{
+   &:hover, &:hover ${Mass}{
          background-color: ${props =>  props.hover ? props.color.hover : props.color.default};
    }
 `
@@ -187,7 +186,7 @@ const CardContent = styled.div`
    overflow: hidden;
 
    font-weight: 400;
-   color: ${props => props.state != "disabled" ? props.theme.colors.cardTextSecondary : props.color.default};
+   color: ${props => props.state !== "disabled" ? props.theme.colors.cardTextSecondary : props.color.default};
 `;
 
 const Details = styled.div`
@@ -204,7 +203,7 @@ const Segment = styled.p`
 
 const Description = styled.p`
    font-size: 0.8125em;
-   color: ${props => props.state != "disabled" ? "white" :props.theme.colors.disabledTextColor};
+   color: ${props => props.state !== "disabled" ? "white" :props.theme.colors.disabledTextColor};
    text-align: center;
 
    span {
@@ -220,4 +219,4 @@ const Description = styled.p`
    }
 `
 
-export default Card;
+export default memo(Card);

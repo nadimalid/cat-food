@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useCallback, useState} from "react";
 import styled from "styled-components";
 import Theme from "./Theme.js";
 import Card from "./components/Card.js";
@@ -6,11 +6,10 @@ import bg from "./assets/images/background.png";
 
 function App() {
 
-   const [dockFlavour, setDockFlavour] = useState({amount: 1, selected: false});
-   const [fishFlavour, setFishFlavour] = useState({amount: 1, selected: false});
-   const [chickenFlavour, setChickenFlavour] = useState({amount: 1, selected: false});
-
-
+   const [dockFlavour, setDockFlavour] = useState(false);
+   const [fishFlavour, setFishFlavour] = useState(false);
+   const [chickenFlavour, setChickenFlavour] = useState(false);
+   
    return (
       <Theme>
          <AppWrapper>
@@ -23,9 +22,10 @@ function App() {
                      weight="0,5"
                      portions="10"
                      description="Печень утки разварная с артишоками."
-                     gift="1"
-                     quantity={dockFlavour.amount}
-                     selected={dockFlavour.selected} toggle={() => setDockFlavour(prevState => {return { ...prevState, selected: !prevState.selected }}) }
+                     gift={1}
+                     quantity={1}
+                     selected={dockFlavour} 
+                     toggle={useCallback(() => setDockFlavour(prevState => !prevState),[])}
                   />
                   <Card 
                      brand="Нямушка"
@@ -33,9 +33,10 @@ function App() {
                      weight="2"
                      portions="40"
                      description ="Головы щучьи с чесноком да свежайшая сёмгушка."
-                     gift="2"
-                     quantity={fishFlavour.amount}
-                     selected={fishFlavour.selected} toggle={() => setFishFlavour(prevState => {return { ...prevState, selected: !prevState.selected }}) }
+                     gift={2}
+                     quantity={1}
+                     selected={fishFlavour} 
+                     toggle={useCallback(() => setFishFlavour(prevState => !prevState),[])}
                   />
                   <Card 
                      brand="Нямушка"
@@ -43,9 +44,10 @@ function App() {
                      weight="5"
                      portions="100"
                      description="Филе из цыплят с трюфелями в бульоне."
-                     gift="5"
-                     quantity={chickenFlavour.amount}
-                     selected={chickenFlavour.selected} toggle={() => setChickenFlavour(prevState => {return { ...prevState, selected: !prevState.selected }}) }
+                     gift={5}
+                     quantity={1}
+                     selected={chickenFlavour} 
+                     toggle={useCallback(() => setChickenFlavour(prevState => !prevState),[])}
                   />
                </Cards>
             </PageContent>
@@ -57,9 +59,8 @@ function App() {
 const AppWrapper = styled.div`
    display: flex;
    justify-content: center;
-   align-items: center;
+   align-items: stretch;
    min-height: 100vh;
-   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 5e-05) 49.88%, rgba(0, 0, 0, 0.5) 100%);
    background-image: url(${bg});
    background-size: cover;
 `;
@@ -67,9 +68,12 @@ const AppWrapper = styled.div`
 const PageContent = styled.div`
    display: flex;
    flex-direction: column;
-   // justify-content: center;
+   justify-content: center;
    align-items: center;
    gap: 1.5rem;
+   width: 100%;
+   padding: 1em;
+   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 5e-05) 49.88%, rgba(0, 0, 0, 0.5) 100%);
 `;
 
 const PageHeader = styled.h1`
