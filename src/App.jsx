@@ -1,7 +1,7 @@
 import React, { useCallback, useState} from "react";
 import styled from "styled-components";
-import Theme from "./Theme.js";
-import Card from "./components/Card.js";
+import Theme from "./Theme.jsx";
+import Card from "./components/Card.jsx";
 import bg from "./assets/images/background.png";
 
 function App() {
