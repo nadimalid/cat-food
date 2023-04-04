@@ -16,8 +16,9 @@ Cat food selection page UI implementation
 ## Installation
 
 - Download the zip file and extract it
-- Open file directory in terminal and run the following command
+- Open file directory in terminal and run the following commands
 ```
+npm install
 npm start
 ```
 - Open the provided link in the browser
