@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import './assets/fonts/Exo2.0-Thin.otf';
-import './assets/fonts/TrebuchetMS.ttf';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
