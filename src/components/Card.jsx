@@ -4,14 +4,14 @@ import Cat from "../assets/images/cat.svg";
 
 const Card = (props) => {
    
-   const [cardState, setCardState] = useState("");
-   const [hover, setHover] = useState(true);
+   const [cardState, setCardState] = useState(""); // Changes with selected or quantity props
+   const [hover, setHover] = useState(true); //set if card should have a hover state
    const {brand, flavor, portions, weight, gift, description, quantity, toggle, selected} = props;
    const theme = useTheme();
 
    let specification = "";
-   let cardColor = {default: "", hover: ""};
-   let present = "мышь в подарок";
+   let cardColor = {default: "", hover: ""}; 
+   let present = "мышь в подарок"; // Singular form for present line by default, changes with gift props amount
 
    useLayoutEffect(() => {
       if(quantity === 0) {
@@ -21,12 +21,14 @@ const Card = (props) => {
        } else { setCardState(""); }
    },[selected, quantity])
    
+   // Set plural form for present line
    if(gift === 2){
       present = <><b>2</b> мыши в подарок</>;
    } else if ( gift > 2){
       present = <><b>{gift}</b> мышей в подарок</>;
    }
 
+   // Change card colors (default and hover) based on cardState
    switch (cardState) {
       case "selected":
          specification = description;

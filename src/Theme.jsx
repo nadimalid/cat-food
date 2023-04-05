@@ -1,6 +1,7 @@
 import { ThemeProvider,createGlobalStyle } from "styled-components";
 import Exo2 from "./assets/fonts/Exo2.0-Thin.otf";
 import TrebuchetMS from "./assets/fonts/TrebuchetMS.ttf";
+
 const GlobalStyle = createGlobalStyle`
     * {
         padding: 0;
